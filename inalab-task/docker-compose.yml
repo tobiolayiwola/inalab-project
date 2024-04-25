@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - GREETING=Hello from Docker Compose!
+    volumes:
+      - .:/app
+    networks:
+      - webnet
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - flask-app
+    networks:
+      - webnet
+
+networks:
+  webnet:
